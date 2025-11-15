@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Chat With Mia</title>
+<style>
+ body {
+   background:#111;
+   font-family: Arial, sans-serif;
+   margin:0;
+   padding:0;
+   color:#fff;
+ }
+ .chat-box {
+   width:90%;
+   max-width:420px;
+   margin:40px auto;
+   background:#1b1b1b;
+   padding:20px;
+   border-radius:12px;
+   box-shadow:0 0 20px rgba(255,0,100,0.4);
+ }
+ .girl-header {
+   display:flex;
+   align-items:center;
+   margin-bottom:15px;
+ }
+ .girl-header img {
+   width:60px;
+   height:60px;
+   border-radius:50%;
+   margin-right:15px;
+ }
+ .bubble {
+   padding:10px 15px;
+   background:#ff006e;
+   border-radius:12px;
+   margin:10px 0;
+   max-width:80%;
+ }
+ .user-bubble {
+   background:#333;
+   margin-left:auto;
+ }
+ .input-area {
+   margin-top:20px;
+   display:flex;
+ }
+ #userInput {
+   flex:1;
+   padding:10px;
+   border:none;
+   border-radius:8px;
+ }
+ button {
+   background:#ff006e;
+   border:none;
+   padding:10px 15px;
+   margin-left:10px;
+   color:#fff;
+   border-radius:8px;
+   cursor:pointer;
+ }
+ #timerBox {
+   display:none;
+   text-align:center;
+   font-size:20px;
+   margin-top:15px;
+ }
+ #verifyBox {
+   display:none;
+   text-align:center;
+   margin-top:20px;
+ }
+ #verifyBox button {
+   width:100%;
+   padding:12px;
+   font-size:18px;
+ }
+</style>
+</head>
+<body>
+<div class="chat-box">
+  <div class="girl-header">
+    <img src="https://i.ibb.co/5LQCQyr/girl.jpg" alt="Girl" />
+    <div>
+      <strong>Mia, 22</strong><br>
+      <small>Online now 🔥</small>
+    </div>
+  </div>
+
+  <div id="chatArea">
+    <div class="bubble">Hey babe 😘 I was waiting for someone to talk…</div>
+    <div class="bubble">Can I ask you something?</div>
+  </div>
+
+  <div id="timerBox">⏳ Time left: <span id="timer">30</span>s</div>
+
+  <div class="input-area" id="inputArea">
+    <input type="text" id="userInput" placeholder="Type your message…" />
+    <button onclick="sendMsg()">Send</button>
+  </div>
+
+  <div id="verifyBox">
+    <p>⚠️ Please confirm you're not a robot</p>
+    <button onclick="window.location.href='YOUR_OFFER_LINK_HERE'">Verify Now →</button>
+  </div>
+</div>
+
+<script>
+let started = false;
+let timeLeft = 30;
+let timerInterval;
+
+const autoReplies = [
+  "Mmm I like the way you text…",
+  "Wanna see something? 😘",
+  "Wait… before that I need to confirm something…"
+];
+let replyIndex = 0;
+
+function startTimer() {
+  document.getElementById("timerBox").style.display = "block";
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    document.getElementById("timer").innerText = timeLeft;
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      lockChat();
+    }
+  }, 1000);
+}
+
+function sendMsg() {
+  const input = document.getElementById("userInput");
+  if (!input.value.trim()) return;
+
+  document.getElementById("chatArea").innerHTML += `<div class='bubble user-bubble'>${input.value}</div>`;
+
+  input.value = "";
+
+  if (!started) {
+    started = true;
+    startTimer();
+  }
+
+  setTimeout(() => {
+    if (replyIndex < autoReplies.length) {
+      document.getElementById("chatArea").innerHTML += `<div class='bubble'>${autoReplies[replyIndex]}</div>`;
+      replyIndex++;
+    }
+  }, 600);
+}
+
+function lockChat() {
+  document.getElementById("inputArea").style.display = "none";
+  document.getElementById("verifyBox").style.display = "block";
+}
+</script>
+</body>
+</html>
